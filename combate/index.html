@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Layout de Habilidades de Combate</title>
+        <link rel="stylesheet" href="../public/styles/style.css"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    </head>
+    <body>
+    <button id="theme-toggle" class="action-btn">🌕 Modo Claro</button>
+<button id="back-to-menu-btn" class="action-btn" style="position: absolute; top: var(--spacing-small); left: var(--spacing-small); z-index: 1000;">🏠 Menu</button>
+        <div class="container">
+            <!-- COLUNA 1: HABILIDADES -->
+            <div class="skills-section">
+                <div class="skills-title">Habilidades de combate</div>
+                <div class="skill" data-skill="attack">
+                    <div class="skill-header">
+                        <div class="skill-info">
+                            <span class="skill-icon">🗡️</span>
+                            <span class="skill-name">Ataque</span>
+                            <span class="skill-value" id="value-attack"></span>
+                        </div>
+                        <div class="skill-buttons">
+                            <button class="skill-btn btn-minus" data-skill="attack" data-action="minus">− </button>
+                            <button class="skill-btn btn-plus" data-skill="attack" data-action="plus">+ </button>
+                        </div>
+                    </div>
+                    <div class="skill-description">É o valor base para o cálculo dos danos. </div>
+                    <div class="progress-bar" id="progress-attack">
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                    </div>
+                </div>
+                <div class="skill" data-skill="precision">
+                    <div class="skill-header">
+                        <div class="skill-info">
+                            <span class="skill-icon">🎯</span>
+                            <span class="skill-name">Precisão</span>
+                            <span class="skill-value" id="value-precision"></span>
+                        </div>
+                        <div class="skill-buttons">
+                            <button class="skill-btn btn-minus" data-skill="precision" data-action="minus">− </button>
+                            <button class="skill-btn btn-plus" data-skill="precision" data-action="plus">+ </button>
+                        </div>
+                    </div>
+                    <div class="skill-description">Hipótese de acertar no alvo.</div>
+                    <div class="progress-bar" id="progress-precision">
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                    </div>
+                </div>
+                <div class="skill" data-skill="criticalChance">
+                    <div class="skill-header">
+                        <div class="skill-info">
+                            <span class="skill-icon">💥</span>
+                            <span class="skill-name">Hip. de crítico</span>
+                            <span class="skill-value" id="value-criticalChance"></span>
+                        </div>
+                        <div class="skill-buttons">
+                            <button class="skill-btn btn-minus" data-skill="criticalChance" data-action="minus">− </button>
+                            <button class="skill-btn btn-plus" data-skill="criticalChance" data-action="plus">+ </button>
+                        </div>
+                    </div>
+                    <div class="skill-description">Hipótese de causar um golpe crítico.</div>
+                    <div class="progress-bar" id="progress-criticalChance">
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                    </div>
+                </div>
+                <div class="skill" data-skill="criticalDamages">
+                    <div class="skill-header">
+                        <div class="skill-info">
+                            <span class="skill-icon">🔥</span>
+                            <span class="skill-name">Danos críticos</span>
+                            <span class="skill-value" id="value-criticalDamages"></span>
+                        </div>
+                        <div class="skill-buttons">
+                            <button class="skill-btn btn-minus" data-skill="criticalDamages" data-action="minus">− </button>
+                            <button class="skill-btn btn-plus" data-skill="criticalDamages" data-action="plus">+ </button>
+                        </div>
+                    </div>
+                    <div class="skill-description">Aumenta o dano dos golpes críticos. </div>
+                    <div class="progress-bar" id="progress-criticalDamages">
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                    </div>
+                </div>
+                <div class="skill" data-skill="armor">
+                    <div class="skill-header">
+                        <div class="skill-info">
+                            <span class="skill-icon">🛡️</span>
+                            <span class="skill-name">Armadura</span>
+                            <span class="skill-value" id="value-armor"></span>
+                        </div>
+                        <div class="skill-buttons">
+                            <button class="skill-btn btn-minus" data-skill="armor" data-action="minus">− </button>
+                            <button class="skill-btn btn-plus" data-skill="armor" data-action="plus">+ </button>
+                        </div>
+                    </div>
+                    <div class="skill-description">Hipótese de reduzir o dano recebido. </div>
+                    <div class="progress-bar" id="progress-armor">
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                    </div>
+                </div>
+                <div class="skill" data-skill="dodge">
+                    <div class="skill-header">
+                        <div class="skill-info">
+                            <span class="skill-icon">🌀</span>
+                            <span class="skill-name">Esquiva</span>
+                            <span class="skill-value" id="value-dodge"></span>
+                        </div>
+                        <div class="skill-buttons">
+                            <button class="skill-btn btn-minus" data-skill="dodge" data-action="minus">− </button>
+                            <button class="skill-btn btn-plus" data-skill="dodge" data-action="plus">+ </button>
+                        </div>
+                    </div>
+                    <div class="skill-description">Esquivar dos danos recebidos. Impede o consumo da durabilidade do equipamento. </div>
+                    <div class="progress-bar" id="progress-dodge">
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                    </div>
+                </div>
+                <div class="skill" data-skill="health">
+                    <div class="skill-header">
+                        <div class="skill-info">
+                            <span class="skill-icon">❤️</span>
+                            <span class="skill-name">Vida</span>
+                            <span class="skill-value" id="value-health"></span>
+                        </div>
+                        <div class="skill-buttons">
+                            <button class="skill-btn btn-minus" data-skill="health" data-action="minus">− </button>
+                            <button class="skill-btn btn-plus" data-skill="health" data-action="plus">+ </button>
+                        </div>
+                    </div>
+                    <div class="skill-description">Consumida ao atacar em batalhas.</div>
+                    <div class="progress-bar" id="progress-health">
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                    </div>
+                </div>
+                <div class="skill" data-skill="lootChance">
+                    <div class="skill-header">
+                        <div class="skill-info">
+                            <span class="skill-icon">📦</span>
+                            <span class="skill-name">Hip. de saque</span>
+                            <span class="skill-value" id="value-lootChance"></span>
+                        </div>
+                        <div class="skill-buttons">
+                            <button class="skill-btn btn-minus" data-skill="lootChance" data-action="minus">− </button>
+                            <button class="skill-btn btn-plus" data-skill="lootChance" data-action="plus">+ </button>
+                        </div>
+                    </div>
+                    <div class="skill-description">Hipótese de saquear uma arma ou equipamento após uma batalha. </div>
+                    <div class="progress-bar" id="progress-lootChance">
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                    </div>
+                </div>
+                <div class="skill" data-skill="hunger">
+                    <div class="skill-header">
+                        <div class="skill-info">
+                            <span class="skill-icon">🍗</span>
+                            <span class="skill-name">Fome</span>
+                            <span class="skill-value" id="value-hunger"></span>
+                        </div>
+                        <div class="skill-buttons">
+                            <button class="skill-btn btn-minus" data-skill="hunger" data-action="minus">− </button>
+                            <button class="skill-btn btn-plus" data-skill="hunger" data-action="plus">+ </button>
+                        </div>
+                    </div>
+                    <div class="skill-description">Limite de consumo de comida.</div>
+                    <div class="progress-bar" id="progress-hunger">
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                        <div class="progress-block"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- COLUNA 2: CENTRO -->
+            <div class="center-column">
+                <div class="character-section">
+                    <div class="character-header">
+                        <div class="player-info">
+                            <div class="avatar-container">
+                                <img src="../public/images/equipments/avatar.png" alt="Avatar do Jogador" class="avatar">
+                                <div class="level-badge" id="char-level-badge"></div>
+                            </div>
+                            <div class="character-stats">
+                                <div class="stat-item stat-orange" data-stat-code="attack">
+                                    🗡️ <span id="char-stat-attack"></span>
+                                </div>
+                                <div class="stat-item stat-orange" data-stat-code="precision">
+                                    🎯 <span id="char-stat-precision"></span>
+                                </div>
+                                <div class="stat-item stat-red" data-stat-code="criticalChance">
+                                    💥 <span id="char-stat-criticalChance"></span>
+                                </div>
+                                <div class="stat-item stat-red" data-stat-code="criticalDamages">
+                                    🔥 <span id="char-stat-criticalDamages"></span>
+                                </div>
+                                <div class="stat-item stat-blue" data-stat-code="armor">
+                                    🛡️ <span id="char-stat-armor"></span>
+                                </div>
+                                <div class="stat-item stat-blue" data-stat-code="dodge">
+                                    🌀 <span id="char-stat-dodge"></span>
+                                </div>
+                                <div class="stat-item stat-green" data-stat-code="lootChance">
+                                    📦 <span id="char-stat-lootChance"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="character-actions">
+                            <button class="action-btn reset-btn" id="reset-btn">🔄 Reiniciar</button>
+                            <button class="action-btn" id="export-btn">📤 Exportar</button>
+                        </div>
+                    </div>
+                    <div class="player-status-section">
+                        <div class="level-points-display">
+                            <div class="stat-label">
+                                Nível: <span id="player-level-display"></span>
+                            </div>
+                            <div class="level-buttons">
+                                <button class="level-btn btn-minus" id="level-minus-btn">−</button>
+                                <button class="level-btn btn-plus" id="level-plus-btn">+</button>
+                            </div>
+                            <div class="stat-label">
+                                Pontos de Habilidade: <span id="skill-points-available"></span>
+                                /<span id="skill-points-total"></span>
+                            </div>
+                        </div>
+                        <div class="buff-selection">
+                            <div class="ammo-buffs">
+                                <button class="buff-btn tier-green" data-buff-code="lightAmmo" title="Munição Leve (+10% Ataque)">L</button>
+                                <button class="buff-btn tier-blue" data-buff-code="ammo" title="Munição Padrão (+20% Ataque)">M</button>
+                                <button class="buff-btn tier-purple" data-buff-code="heavyAmmo" title="Munição Pesada (+40% Ataque)">H</button>
+                            </div>
+                            <div class="consumable-buffs">
+                                <button class="buff-btn tier-red" data-buff-code="cocain" title="Comprimido (+80% Ataque)">💊</button>
+                            </div>
+                        </div>
+                        <div class="resource-bars">
+                            <div class="resource-item">
+                                <span>❤️</span>
+                                <div class="bar-container" id="health-bar-container">
+                                    <div class="bar-fill" id="health-bar-fill"></div>
+                                    <span class="bar-text" id="health-bar-display"></span>
+                                </div>
+                            </div>
+                            <div class="resource-item">
+                                <span>🍗</span>
+                                <div class="bar-container" id="hunger-bar-container">
+                                    <div class="bar-fill" id="hunger-bar-fill"></div>
+                                    <span class="bar-text" id="hunger-bar-display"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="equipment-section">
+                        <div class="equipment-labels">
+                            <span>Arma</span>
+                            <span>Munição</span>
+                            <span>Capacete</span>
+                            <span>Peitoral</span>
+                            <span>Calças</span>
+                            <span>Botas</span>
+                            <span>Luvas</span>
+                        </div>
+                        <div class="equipment-slots">
+                            <div class="equipment-slot" data-slot="weapon">+</div>
+                            <div class="equipment-slot" data-slot="ammo">+</div>
+                            <div class="equipment-slot" data-slot="helmet">+</div>
+                            <div class="equipment-slot" data-slot="chest">+</div>
+                            <div class="equipment-slot" data-slot="pants">+</div>
+                            <div class="equipment-slot" data-slot="boots">+</div>
+                            <div class="equipment-slot" data-slot="gloves">+</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="config-and-simulation-section">
+                    <div id="item-config-panel" class="config-panel hidden">
+                        <h4>Configuração do Item</h4>
+                        <div class="item-details">
+                            <div id="config-item-icon-container" class="inventory-item">
+                                <img id="config-item-icon" src="" alt="Ícone do Item Selecionado">
+                            </div>
+                            <span id="config-item-name">Nome do Item</span>
+                        </div>
+                        <div id="item-stats-config" class="item-stats-config">
+                            <p>Seleciona um item do inventário para o configurar.</p>
+                        </div>
+                        <button id="equip-item-btn" class="action-btn">Equipar Item</button>
+                    </div>
+                    <div id="simulation-panel" class="simulation-panel">
+                        <button id="simulate-btn" class="action-btn">Simular Dano</button>
+                        <button id="simulate-full-btn" class="action-btn">Simular Combate Completo</button>
+                        <h4>Simulação de Dano</h4>
+                        <div id="simulation-log" class="simulation-log">Resultados</div>
+                    </div>
+                </div>
+            </div>
+            <!-- COLUNA 3: INVENTÁRIO -->
+            <div class="inventory-section">
+                <div class="inventory-title">Inventário</div>
+                <div class="inventory-grid">
+                    <!-- consumíveis -->
+                    <div class="inventory-item tier-green" data-code="bread">
+                        <img src="../public/images/equipments/bread.png" alt="Pão"/>
+                    </div>
+                    <div class="inventory-item tier-blue" data-code="steak">
+                        <img src="../public/images/equipments/steak.png" alt="Bife"/>
+                    </div>
+                    <div class="inventory-item tier-purple" data-code="cookedFish">
+                        <img src="../public/images/equipments/cookedFish.png" alt="Peixe Cozido"/>
+                    </div>
+                    <!-- equipamento -->
+                    <!-- tier-gray -->
+                    <div class="inventory-item tier-gray" data-code="pants1">
+                        <img src="../public/images/equipments/pants1.png" alt="Calças Cinzentas"/>
+                    </div>
+                    <div class="inventory-item tier-gray" data-code="gloves1">
+                        <img src="../public/images/equipments/gloves1.png" alt="Luvas Cinzentas"/>
+                    </div>
+                    <div class="inventory-item tier-gray" data-code="boots1">
+                        <img src="../public/images/equipments/boots1.png" alt="Botas Cinzentas"/>
+                    </div>
+                    <div class="inventory-item tier-gray" data-code="chest1">
+                        <img src="../public/images/equipments/chest1.png" alt="Peitoral Cinzento"/>
+                    </div>
+                    <div class="inventory-item tier-gray" data-code="helmet1">
+                        <img src="../public/images/equipments/helmet1.png" alt="Capacete Cinzento"/>
+                    </div>
+                    <div class="inventory-item tier-gray" data-code="knife">
+                        <img src="../public/images/equipments/knife.png" alt="Faca Cinzenta"/>
+                    </div>
+                    <!-- tier-green -->
+                    <div class="inventory-item tier-green" data-code="pants2">
+                        <img src="../public/images/equipments/pants1.png" alt="Calças Verdes"/>
+                    </div>
+                    <div class="inventory-item tier-green" data-code="gloves2">
+                        <img src="../public/images/equipments/gloves1.png" alt="Luvas Verdes"/>
+                    </div>
+                    <div class="inventory-item tier-green" data-code="boots2">
+                        <img src="../public/images/equipments/boots1.png" alt="Botas Verdes"/>
+                    </div>
+                    <div class="inventory-item tier-green" data-code="chest2">
+                        <img src="../public/images/equipments/chest1.png" alt="Peitoral Verde"/>
+                    </div>
+                    <div class="inventory-item tier-green" data-code="helmet2">
+                        <img src="../public/images/equipments/helmet1.png" alt="Capacete Verde"/>
+                    </div>
+                    <div class="inventory-item tier-green" data-code="gun">
+                        <img src="../public/images/equipments/gun.png" alt="Arma Verde"/>
+                    </div>
+                    <!-- tier-blue -->
+                    <div class="inventory-item tier-blue" data-code="pants3">
+                        <img src="../public/images/equipments/pants1.png" alt="Calças Azuis"/>
+                    </div>
+                    <div class="inventory-item tier-blue" data-code="gloves3">
+                        <img src="../public/images/equipments/gloves1.png" alt="Luvas Azuis"/>
+                    </div>
+                    <div class="inventory-item tier-blue" data-code="boots3">
+                        <img src="../public/images/equipments/boots1.png" alt="Botas Azuis"/>
+                    </div>
+                    <div class="inventory-item tier-blue" data-code="chest3">
+                        <img src="../public/images/equipments/chest1.png" alt="Peitoral Azul"/>
+                    </div>
+                    <div class="inventory-item tier-blue" data-code="helmet3">
+                        <img src="../public/images/equipments/helmet1.png" alt="Capacete Azul"/>
+                    </div>
+                    <div class="inventory-item tier-blue" data-code="rifle">
+                        <img src="../public/images/equipments/rifle.png" alt="Rifle Azul"/>
+                    </div>
+                    <!-- tier-purple -->
+                    <div class="inventory-item tier-purple" data-code="pants4">
+                        <img src="../public/images/equipments/pants1.png" alt="Calças Roxas"/>
+                    </div>
+                    <div class="inventory-item tier-purple" data-code="gloves4">
+                        <img src="../public/images/equipments/gloves1.png" alt="Luvas Roxas"/>
+                    </div>
+                    <div class="inventory-item tier-purple" data-code="boots4">
+                        <img src="../public/images/equipments/boots1.png" alt="Botas Roxas"/>
+                    </div>
+                    <div class="inventory-item tier-purple" data-code="chest4">
+                        <img src="../public/images/equipments/chest1.png" alt="Peitoral Roxo"/>
+                    </div>
+                    <div class="inventory-item tier-purple" data-code="helmet4">
+                        <img src="../public/images/equipments/helmet1.png" alt="Capacete Roxo"/>
+                    </div>
+                    <div class="inventory-item tier-purple" data-code="sniper">
+                        <img src="../public/images/equipments/sniper.png" alt="Sniper Roxo"/>
+                    </div>
+                    <!-- tier-orange -->
+                    <div class="inventory-item tier-orange" data-code="pants5">
+                        <img src="../public/images/equipments/pants1.png" alt="Calças Cor de Laranja"/>
+                    </div>
+                    <div class="inventory-item tier-orange" data-code="gloves5">
+                        <img src="../public/images/equipments/gloves1.png" alt="Luvas Cor de Laranja"/>
+                    </div>
+                    <div class="inventory-item tier-orange" data-code="boots5">
+                        <img src="../public/images/equipments/boots1.png" alt="Botas Cor de Laranja"/>
+                    </div>
+                    <div class="inventory-item tier-orange" data-code="chest5">
+                        <img src="../public/images/equipments/chest1.png" alt="Peitoral Cor de Laranja"/>
+                    </div>
+                    <div class="inventory-item tier-orange" data-code="helmet5">
+                        <img src="../public/images/equipments/helmet1.png" alt="Capacete Cor de Laranja"/>
+                    </div>
+                    <div class="inventory-item tier-orange" data-code="tank">
+                        <img src="../public/images/equipments/tank.png" alt="Tanque Cor de Laranja"/>
+                    </div>
+                </div>
+            </div>
+            <div id="stat-tooltip" class="stat-tooltip"></div>
+            <script type="module" src="src/main.js"></script>
+            <!-- MODAL PARA SELEÇÃO DE COMIDA -->
+            <div id="food-selection-modal" class="modal-overlay hidden">
+                <div class="modal-content">
+                    <h4>Selecionar Consumível para Combate Completo</h4>
+                    <p>Escolhe um item alimentar para simular quanto tempo consegues aguentar em combate.</p>
+                    <div id="modal-food-options" class="modal-food-grid">
+                    <!-- As opções de comida serão carregadas aqui dinamicamente -->
+                    </div>
+                    <div class="modal-actions">
+                        <button id="cancel-simulation-btn" class="action-btn">Cancelar</button>
+                        <button id="start-simulation-with-food-btn" class="action-btn reset-btn" disabled>Simular</button>
+                    </div>
+                </div>
+            </div>
+            <!-- MODELO PARA EXPORTAR IMAGEM (OCULTO POR DEFECTO) -->
+            <div id="build-export-card">
+                <div class="export-header">
+                    <div class="export-player-info">
+                        <h3>BUILD DO JOGADOR</h3>
+                        <span id="export-level-badge"></span>
+                    </div>
+                </div>
+                <div class="export-main-content">
+                    <div class="export-column export-skills-column">
+                        <h4>Habilidades</h4>
+                        <ul id="export-skills-list">
+                        <!-- As habilidades serão preenchidas aqui -->
+                        </ul>
+                    </div>
+                    <div class="export-column export-stats-column">
+                        <h4>Estatísticas do Personagem</h4>
+                        <ul id="export-stats-list">
+                        <!-- As estatísticas serão preenchidas aqui -->
+                        </ul>
+                        <h4>Equipamento</h4>
+                        <div id="export-equipment-grid" class="export-equipment-grid">
+                        <!-- O equipamento será preenchido aqui -->
+                        </div>
+                    </div>
+                </div>
+                <div class="export-footer">
+                    <h4>Resultado da Simulação</h4>
+                    <p id="export-simulation-summary">Sem dados de simulação.</p>
+                </div>
+            </div>
+    </body>
+       <!-- ... resto do teu HTML ... -->
+
+    <!-- Script UNIFICADO para alternar o tema e voltar ao menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Lógica do Botão de Tema ---
+            const toggleButton = document.getElementById('theme-toggle');
+            const htmlElement = document.documentElement;
+
+            // Verifica preferência guardada ou do sistema
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const initialTheme = savedTheme || (prefersDarkScheme ? 'dark' : 'light');
+
+            // Aplica o tema inicial
+            if (initialTheme === 'light') {
+                htmlElement.classList.add('light-theme');
+                // Certifica-te de que o botão existe antes de tentar modificar
+                if (toggleButton) {
+                    toggleButton.textContent = '🌑 Modo Escuro';
+                }
+            } else {
+                htmlElement.classList.remove('light-theme');
+                if (toggleButton) {
+                    toggleButton.textContent = '🌕 Modo Claro';
+                }
+            }
+
+            // Listener para o botão de tema (apenas se o botão existir)
+            if (toggleButton) {
+                toggleButton.addEventListener('click', () => {
+                    htmlElement.classList.toggle('light-theme');
+                    const isLight = htmlElement.classList.contains('light-theme');
+                    toggleButton.textContent = isLight ? '🌑 Modo Escuro' : '🌕 Modo Claro';
+                    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+                });
+            }
+
+            // --- Lógica do Botão "Menu" ---
+            const backButton = document.getElementById('back-to-menu-btn');
+            // Listener para o botão de voltar ao menu (apenas se o botão existir)
+            if (backButton) {
+                backButton.addEventListener('click', () => {
+                    window.location.href = '../main-menu.html'; // Navega para o menu principal
+                });
+            }
+        });
+    </script>
+</body>
+</html>

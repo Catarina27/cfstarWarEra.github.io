@@ -1,0 +1,188 @@
+/* market-style.css */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    background-color: var(--color-background-primary, #0d1117);
+    color: var(--color-text-primary, #e6edf3);
+    margin: 0;
+    padding: var(--spacing-small, 10px);
+}
+
+.market-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.market-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-large, 20px);
+    flex-wrap: wrap;
+    gap: var(--spacing-small, 10px);
+}
+
+.market-header h1 {
+    margin: 0;
+    color: var(--color-text-heading, #f0f6fc);
+    flex-grow: 1;
+    text-align: center;
+}
+
+.bonus-section {
+    background-color: var(--color-background-secondary, #161b22);
+    border: 1px solid var(--color-border-primary, #30363d);
+    border-radius: var(--border-radius-medium, 8px);
+    padding: var(--spacing-medium, 15px);
+    margin-bottom: var(--spacing-large, 20px);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-small, 10px);
+    align-items: center;
+}
+
+.bonus-section label {
+    font-weight: 500;
+    color: var(--color-text-strong, #c9d1d9);
+}
+
+.bonus-section input {
+    padding: 8px;
+    border: 1px solid var(--color-border-primary, #30363d);
+    border-radius: var(--border-radius-small, 4px);
+    background-color: var(--color-background-primary, #0d1117);
+    color: var(--color-text-primary, #e6edf3);
+    width: 80px;
+}
+
+.bonus-section .action-btn {
+    /* Herda estilos de .action-btn do teu CSS global, se aplicável */
+    padding: 8px 12px;
+    font-size: 14px;
+}
+
+#bonus-status {
+    font-weight: 500;
+    color: var(--color-accent-green, #3fb950); /* Verde para sucesso */
+}
+
+.table-section, .chart-section {
+    background-color: var(--color-background-secondary, #161b22);
+    border: 1px solid var(--color-border-primary, #30363d);
+    border-radius: var(--border-radius-medium, 8px);
+    padding: var(--spacing-medium, 15px);
+    margin-bottom: var(--spacing-large, 20px);
+}
+
+.table-section h2, .chart-section h2 {
+    margin-top: 0;
+    color: var(--color-text-heading, #f0f6fc);
+    border-bottom: 1px solid var(--color-border-secondary, #21262d);
+    padding-bottom: var(--spacing-small, 10px);
+}
+
+#loading-message {
+    text-align: center;
+    font-style: italic;
+    color: var(--color-text-secondary, #8b949e);
+    padding: var(--spacing-large, 20px);
+}
+
+.hidden {
+    display: none !important;
+}
+
+#market-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: var(--spacing-medium, 15px);
+}
+
+#market-table th, #market-table td {
+    border: 1px solid var(--color-border-secondary, #21262d);
+    padding: 10px;
+    text-align: left;
+}
+
+#market-table th {
+    background-color: var(--color-border-secondary, #21262d);
+    color: var(--color-text-heading, #f0f6fc);
+    font-weight: 600;
+}
+
+#market-table tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.05); /* Sutil zebramento */
+}
+
+#market-table tr:hover {
+    background-color: rgba(139, 92, 246, 0.1); /* Hover roxo suave */
+}
+
+.chart-section {
+    /* Garante altura mínima para o gráfico */
+    min-height: 400px; 
+}
+
+#chart-container {
+    position: relative;
+    height: 350px; /* Altura fixa para o canvas */
+    width: 100%;
+}
+
+/* Estilos para o tema claro, se quiseres manter a consistência */
+.light-theme body {
+    background-color: var(--color-background-primary, #ffffff);
+    color: var(--color-text-primary, #1f2328);
+}
+
+/* Botão de ação geral (se não estiver definido globalmente) */
+.action-btn {
+    background-color: var(--color-btn-reset-bg, #6e7681);
+    color: var(--color-text-heading, #f0f6fc);
+    border: 1px solid var(--color-border-primary, #30363d);
+    border-radius: var(--border-radius-small, 4px);
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s ease;
+}
+
+.action-btn:hover:not(:disabled) {
+    background-color: var(--color-btn-reset-hover, #8b949e);
+}
+
+.action-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Adicione ao final do market-style.css */
+
+.rankings-section {
+    background-color: var(--color-background-secondary, #161b22);
+    border: 1px solid var(--color-border-primary, #30363d);
+    border-radius: var(--border-radius-medium, 8px);
+    padding: var(--spacing-medium, 15px);
+    margin-bottom: var(--spacing-large, 20px);
+}
+
+.rankings-section h2 {
+    margin-top: 0;
+    color: var(--color-text-heading, #f0f6fc);
+    border-bottom: 1px solid var(--color-border-secondary, #21262d);
+    padding-bottom: var(--spacing-small, 10px);
+}
+
+.rankings-section p {
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+.rankings-section strong {
+    color: var(--color-text-strong, #c9d1d9);
+}
+
+/* Estilos para colunas numéricas da tabela para melhor alinhamento */
+#market-table td:nth-child(n+2) { /* Todas as colunas exceto a primeira (nome do item) */
+    text-align: right;
+    font-family: monospace; /* Fonte monospace para números */
+}

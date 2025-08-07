@@ -1,4 +1,5 @@
 // --- START OF FILE src/ui.js (CORRECTED) ---
+// Importa funções e estado do módulo 'state.js'
 import { playerState, skillsData, MIN_SKILL_LEVEL, MIN_PLAYER_LEVEL, MAX_PLAYER_LEVEL, SKILL_POINTS_PER_LEVEL } from './state.js';
 import { getSkillData, calculateStatDetails, calculateCumulativeSkillCost } from './calculator.js';
 
@@ -22,9 +23,32 @@ export function applyButtonTransform(button) {
     }
 }
 
+/**
+ * Formata um código num nome legível, com exceções para nomes específicos.
+ * @param {string} code - O código a formatar.
+ * @returns {string} O nome formatado.
+ */
 function formatCodeToName(code) {
     if (!code) return '';
-    return code.replace(/([A-Z])/g, ' $1').replace(/(\d+)/g, ' $1').replace(/^./, str => str.toUpperCase());
+
+    // Mapeamento de exceções para nomes específicos em Português
+    const nameOverrides = {
+        'bread': 'Pão',
+        'steak': 'Bife',
+        'cookedFish': 'Peixe Cozido'
+        // Adiciona mais conforme necessário
+    };
+
+    // Se houver uma exceção definida, usa-a
+    if (nameOverrides[code]) {
+        return nameOverrides[code];
+    }
+
+    // Caso contrário, aplica a formatação padrão
+    return code
+        .replace(/([A-Z])/g, ' $1')
+        .replace(/(\d+)/g, ' $1')
+        .replace(/^./, (str) => str.toUpperCase());
 }
 
 function renderSkill(skillCode) {
@@ -93,7 +117,7 @@ function renderEquippedItems() {
             else if (imgCode.startsWith('gloves')) imgCode = 'gloves1';
             else if (imgCode.startsWith('chest')) imgCode = 'chest1';
             else if (imgCode.startsWith('boots')) imgCode = 'boots1';
-            const imgSrc = `public/images/items/${imgCode}.png`;
+            const imgSrc = `public/images/equipments/${imgCode}.png`;
             slotElement.innerHTML = `<img src="${imgSrc}" alt="${equippedItem.name}">`;
         } else {
 // ... existing code ...

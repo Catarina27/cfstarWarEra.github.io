@@ -1,5 +1,4 @@
-// --- START OF FILE src/calculator.js (CORRECTED) ---
-
+//src/calculator.js
 import { skillsData, playerState, MIN_SKILL_LEVEL, MAX_SKILL_LEVEL } from './state.js';
 
 export function getSkillData(skillCode, level) {
@@ -28,9 +27,7 @@ export function calculateStatDetails(skillCode) {
     const currentSkillLevel = playerState.assignedSkillLevels[skillCode];
     const skillBaseInfo = getSkillData(skillCode, currentSkillLevel);
     const skillValue = skillBaseInfo ? skillBaseInfo.value : 0;
-    
     const { equippedItems, activeBuffs } = playerState;
-
     let equipmentValue = 0;
     let equipmentItems = [];
     let ammoPercent = 0;
@@ -89,8 +86,8 @@ export function calculateStatDetails(skillCode) {
 }
 
 export function simulateFullCombat() {
-    // Esta funciÃ³n ahora es un wrapper simple sin comida.
-    // La nueva lÃ³gica estarÃ¡ en simulateFullCombatWithFood
+    // Esta função é agora um wrapper simples sem comida.
+    // A nova lógica estará em simulateFullCombatWithFood
     let totalDamageDealt = 0;
     let ticksSurvived = 0;
     let fullLog = [];
@@ -105,12 +102,12 @@ export function simulateFullCombat() {
         }
         ticksSurvived++;
         const healthAfterTick = Math.max(0, tempCurrentHealth).toFixed(1);
-        fullLog.push(`--- Hit ${ticksSurvived} (Health: ${healthAfterTick}) ---`);
+        fullLog.push(`--- Golpe ${ticksSurvived} (Vida: ${healthAfterTick}) ---`);
         fullLog.push(...tickResult.log);
     }
 
     if (ticksSurvived >= MAX_TICKS) {
-        fullLog.push("--- SIMULATION STOPPED: Maximum number of hits reached. ---");
+        fullLog.push("--- SIMULAÇÃO PARADA: Número máximo de golpes atingido. ---");
     }
 
     return {
@@ -121,76 +118,67 @@ export function simulateFullCombat() {
     };
 }
 
-
-// NUEVA FUNCIÃ“N PARA LA SIMULACIÃ“N CON COMIDA
+// NOVA FUNÇÃO PARA A SIMULAÇÃO COM COMIDA
 export function simulateFullCombatWithFood(foodItem) {
     let totalDamageDealt = 0;
     let ticksSurvived = 0;
     let fullLog = [];
-    
     let tempCurrentHealth = playerState.currentHealth;
     let tempCurrentHunger = playerState.currentHunger;
-
     const healthPerFood = foodItem.flatStats.healthRegen || 0;
     const maxHealthFromSkills = getSkillData('health', playerState.assignedSkillLevels.health)?.value || 50;
-    const INCOMING_DAMAGE_PER_TICK = 10; // DaÃ±o base que se recibe por golpe
-
+    const INCOMING_DAMAGE_PER_TICK = 10; // Dano base que se recebe por golpe
     const MAX_TICKS = 2000;
 
-    fullLog.push(`--- Simulation started with ${foodItem.name} (+${healthPerFood} HP per hunger point) ---`);
+    fullLog.push(`--- Simulação iniciada com ${foodItem.name} (+${healthPerFood} PV por ponto de fome) ---`);
 
     while (ticksSurvived < MAX_TICKS) {
-        // --- COMIENZO DEL NUEVO FLUJO LÃ“GICO ---
-
-        // 1. VERIFICACIÃ“N DE PÃNICO Y CONSUMO DE COMIDA (ANTES DE RECIBIR EL GOLPE)
-        // Si la vida es crÃ­ticamente baja Y el personaje puede comer, entra en un bucle de consumo.
+        // --- COMEÇO DO NOVO FLUXO LÓGICO ---
+        // 1. VERIFICAÇÃO DE PÂNICO E CONSUMO DE COMIDA (ANTES DE RECEBER O GOLPE)
+        // Se a vida é criticamente baixa E o personagem pode comer, entra num ciclo de consumo.
         if (tempCurrentHealth <= INCOMING_DAMAGE_PER_TICK && tempCurrentHunger > 0 && healthPerFood > 0) {
-            fullLog.push(`<strong>CRITICAL HEALTH!</strong> HP at ${tempCurrentHealth.toFixed(1)}. Attempting to eat.`);
-            
-            // Bucle de consumo: comer hasta estar seguro o no poder mÃ¡s.
+            fullLog.push(`<strong>VIDA CRÍTICA!</strong> PV a ${tempCurrentHealth.toFixed(1)}. A tentar comer.`);
+            // Ciclo de consumo: comer até estar seguro ou não poder mais.
             while (tempCurrentHunger > 0 && tempCurrentHealth <= INCOMING_DAMAGE_PER_TICK) {
-                // Guarda de seguridad para la regla de sobrecuraciÃ³n: no comer si la vida ya es >= maxHealth
+                // Segurança para a regra de sobrecura: não comer se a vida já é >= maxHealth
                 if (tempCurrentHealth >= maxHealthFromSkills) {
-                    fullLog.push(`Stopped eating: health is full or overcharged (${tempCurrentHealth.toFixed(1)} / ${maxHealthFromSkills}).`);
+                    fullLog.push(`Parou de comer: a vida está cheia ou sobrecarregada (${tempCurrentHealth.toFixed(1)} / ${maxHealthFromSkills}).`);
                     break;
                 }
-
                 tempCurrentHunger--;
                 const healthBeforeHeal = tempCurrentHealth;
                 tempCurrentHealth += healthPerFood;
-                fullLog.push(`<strong>ATE ${foodItem.name.toUpperCase()}!</strong> Healed for ${healthPerFood}. HP: ${healthBeforeHeal.toFixed(1)} -> ${tempCurrentHealth.toFixed(1)}. Hunger left: ${tempCurrentHunger}.`);
+                fullLog.push(`<strong>COMEU ${foodItem.name.toUpperCase()}!</strong> Curado em ${healthPerFood}. PV: ${healthBeforeHeal.toFixed(1)} -> ${tempCurrentHealth.toFixed(1)}. Fome restante: ${tempCurrentHunger}.`);
             }
         }
-        
-        // 2. VERIFICACIÃ“N DE FIN DE COMBATE
-        // Si despuÃ©s de intentar comer, la vida sigue siendo insuficiente para sobrevivir el prÃ³ximo golpe, el combate termina.
+
+        // 2. VERIFICAÇÃO DE FIM DE COMBATE
+        // Se depois de tentar comer, a vida continuar insuficiente para sobreviver ao próximo golpe, o combate termina.
         if (tempCurrentHealth <= 0) {
-            fullLog.push(`--- COMBAT ENDED: Player defeated. Not enough health to continue. ---`);
+            fullLog.push(`--- COMBATE TERMINADO: Jogador derrotado. Vida insuficiente para continuar. ---`);
             break;
         }
 
-        // 3. EJECUCIÃ“N DEL TICK DE COMBATE (Hacer y recibir daÃ±o)
-        const tickResult = simulateCombatTick(); // Esta funciÃ³n ya calcula el daÃ±o recibido y hecho.
-        
-        // Aplicar el daÃ±o recibido en este tick
+        // 3. EXECUÇÃO DO TICK DE COMBATE (Causar e receber dano)
+        const tickResult = simulateCombatTick(); // Esta função já calcula o dano recebido e causado.
+        // Aplicar o dano recebido neste tick
         const healthLostThisTick = tickResult.healthLost;
         tempCurrentHealth -= healthLostThisTick;
-        
-        // Sumar el daÃ±o infligido en este tick
+        // Somar o dano infligido neste tick
         totalDamageDealt += tickResult.finalDamageDealt;
         ticksSurvived++;
 
-        // 4. REGISTRO DEL LOG
+        // 4. REGISTO NO LOG
         const healthAfterDamage = tempCurrentHealth;
-        let logEntry = `--- Hit ${ticksSurvived} | HP left: ${Math.max(0, healthAfterDamage).toFixed(1)} | Hunger: ${tempCurrentHunger} ---`;
+        let logEntry = `--- Golpe ${ticksSurvived} | PV restantes: ${Math.max(0, healthAfterDamage).toFixed(1)} | Fome: ${tempCurrentHunger} ---`;
         fullLog.push(logEntry);
-        fullLog.push(...tickResult.log); // AÃ±adir los detalles del golpe (miss, critical, etc.)
+        fullLog.push(...tickResult.log); // Adicionar os detalhes do golpe (falha, crítico, etc.)
 
-        // Si la vida llega a 0 despuÃ©s de este golpe, el siguiente bucle lo detectarÃ¡ y terminarÃ¡ el combate.
+        // Se a vida chegar a 0 depois deste golpe, o próximo ciclo o detectará e terminará o combate.
     }
 
     if (ticksSurvived >= MAX_TICKS) {
-        fullLog.push("--- SIMULATION STOPPED: Maximum number of hits reached. ---");
+        fullLog.push("--- SIMULAÇÃO PARADA: Número máximo de golpes atingido. ---");
     }
 
     return {
@@ -198,12 +186,12 @@ export function simulateFullCombatWithFood(foodItem) {
         ticksSurvived,
         log: fullLog,
         finalHealth: Math.max(0, tempCurrentHealth),
-        // CORRECCIÃ“N: AÃ±adir el hambre restante al objeto de retorno.
-        finalHunger: tempCurrentHunger 
+        // CORREÇÃO: Adicionar a fome restante ao objeto de retorno.
+        finalHunger: tempCurrentHunger
     };
 }
 
-// FIX: Removed duplicate. This is the single, correct definition.
+// CORREÇÃO: Removida duplicata. Esta é a definição única e correta.
 export function simulateCombatTick() {
   const attackStats = calculateStatDetails('attack');
   const precisionStats = calculateStatDetails('precision');
@@ -211,7 +199,7 @@ export function simulateCombatTick() {
   const critDamageStats = calculateStatDetails('criticalDamages');
   const armorStats = calculateStatDetails('armor');
   const dodgeStats = calculateStatDetails('dodge');
-  
+
   let log = [];
   let finalDamageDealt = 0;
   let healthLost = 10;
@@ -219,33 +207,33 @@ export function simulateCombatTick() {
   const wasDodge = Math.random() * 100 < dodgeStats.total;
   if (wasDodge) {
       healthLost = 0;
-      log.push('<strong>DODGE!</strong> No health was lost.');
+      log.push('<strong>ESQUIVA!</strong> Não se perdeu vida.');
   } else {
       const damageReduction = healthLost * (armorStats.total / 100);
       healthLost -= damageReduction;
-      log.push(`<strong>ARMOR</strong> reduced health loss by ${damageReduction.toFixed(1)}.`);
+      log.push(`<strong>ARMADURA</strong> reduziu a perda de vida em ${damageReduction.toFixed(1)}.`);
   }
 
   let baseDamage = attackStats.total;
-  log.push(`Base damage potential is ${baseDamage.toFixed(1)}.`);
+  log.push(`Potencial de dano base é ${baseDamage.toFixed(1)}.`);
 
   const wasHit = Math.random() * 100 < precisionStats.total;
   if (!wasHit) {
       baseDamage /= 2;
-      log.push('<strong>MISS!</strong> Damage was halved.');
+      log.push('<strong>FALHOU!</strong> O dano foi reduzido a metade.');
   } else {
-      log.push('<strong>HIT!</strong> Full damage potential.');
+      log.push('<strong>ACERTOU!</strong> Potencial de dano total.');
   }
-  
+
   const wasCritical = Math.random() * 100 < critChanceStats.total;
   if (wasCritical) {
       const critMultiplier = 1 + (critDamageStats.total / 100);
       const criticalDamageBonus = baseDamage * (critDamageStats.total / 100);
       finalDamageDealt = baseDamage * critMultiplier;
-      log.push(`<strong>CRITICAL HIT!</strong> Damage multiplied by ${critMultiplier.toFixed(2)} (+${criticalDamageBonus.toFixed(1)}).`);
+      log.push(`<strong>GOLPE CRÍTICO!</strong> Dano multiplicado por ${critMultiplier.toFixed(2)} (+${criticalDamageBonus.toFixed(1)}).`);
   } else {
       finalDamageDealt = baseDamage;
-      log.push('Normal hit.');
+      log.push('Golpe normal.');
   }
 
   return {

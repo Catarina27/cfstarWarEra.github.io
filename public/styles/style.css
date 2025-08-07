@@ -1,6 +1,6 @@
 /* --- THEME & GLOBAL VARIABLES --- */
+/* Dark Theme (default) - Palette inspired by GitHub Dark */
 :root {
-  /* Colors - Palette inspired by GitHub Dark */
   --color-background-primary: #0d1117;
   --color-background-secondary: #161b22;
   --color-border-primary: #30363d;
@@ -11,15 +11,13 @@
   --color-text-heading: #f0f6fc;
   --color-text-light: white;
 
-  /* Accent Colors */
-  --color-accent-primary: #8b5cf6;
-  --color-accent-primary-hover: #7c3aed;
+  --color-accent-primary: #6f4ba7;
+  --color-accent-primary-hover: #634294;
   --color-accent-blue: #58a6ff;
   --color-accent-green: #3fb950;
   --color-accent-red: #f85149;
   --color-accent-orange: #ffa657;
 
-  /* Button/Action Specific Colors */
   --color-btn-plus-bg: #238636;
   --color-btn-plus-hover: #2ea043;
   --color-btn-minus-bg: #da3633;
@@ -29,25 +27,66 @@
   --color-btn-reset-bg: #6e7681;
   --color-btn-reset-hover: #8b949e;
 
-  /* Tier & Buff Colors */
-  --color-tier-gray: #6e7681;
-  --color-tier-green: #3fb950;
-  --color-tier-blue: #58a6ff;
-  --color-tier-purple: #a5a3ff;
-  --color-tier-orange: #ffa657;
-  --color-buff-blue: #1f6feb;
-  --color-buff-purple: #8957e5;
-  
-  /* Shadow & Effects */
-  --color-shadow-active: rgba(240, 246, 252, 0.5);
+  --color-tier-gray: #3e474f;
+  --color-tier-green: #39936c;
+  --color-tier-blue: #2e61d1;
+  --color-tier-purple: #7c53b9;
+  --color-tier-orange: #9b9a4a;
+  --color-buff-blue: #2e61d1;
+  --color-buff-purple: #7c53b9;
 
-  /* Sizing & Spacing */
+  --color-shadow-active-dark: rgba(240, 246, 252, 0.5);
+  --color-shadow-active-light: rgba(27, 31, 36, 0.3);
+
   --border-radius-small: 4px;
   --border-radius-medium: 8px;
   --border-radius-large: 10px;
   --spacing-small: 10px;
   --spacing-medium: 15px;
   --spacing-large: 20px;
+}
+
+/* Light Theme - Palette inspired by GitHub Light */
+.light-theme {
+  --color-background-primary: #ffffff;
+  --color-background-secondary: #f6f8fa;
+  --color-border-primary: #d0d7de;
+  --color-border-secondary: #d8dee4;
+  --color-text-primary: #1f2328;
+  --color-text-secondary: #636c76;
+  --color-text-strong: #24292f;
+  --color-text-heading: #111827;
+  --color-text-light: white;
+
+  --color-accent-primary: #6f4ba7;
+  --color-accent-primary-hover: #634294;
+  --color-accent-blue: #0969da;
+  --color-accent-green: #1a7f37;
+  --color-accent-red: #cf222e;
+  --color-accent-orange: #bc4c00;
+
+  --color-btn-plus-bg: #1f883d;
+  --color-btn-plus-hover: #1a7f37;
+  --color-btn-minus-bg: #cf222e;
+  --color-btn-minus-hover: #b31b24;
+  --color-btn-disabled-bg: #afb8c1;
+  --color-btn-disabled-text: #636c76;
+  --color-btn-reset-bg: #afb8c1;
+  --color-btn-reset-hover: #8c959f;
+
+  --color-tier-gray: #636c76;
+  --color-tier-green: #1a7f37;
+  --color-tier-blue: #0969da;
+  --color-tier-purple: #8250df;
+  --color-tier-orange: #bc4c00;
+  --color-buff-blue: #0969da;
+  --color-buff-purple: #8250df;
+
+  --color-shadow-active: var(--color-shadow-active-light);
+}
+
+:root {
+  --color-shadow-active: var(--color-shadow-active-dark);
 }
 
 /* --- RESET & BASE STYLES (MOBILE-FIRST) --- */
@@ -62,20 +101,46 @@ body {
   margin: 0;
   padding: var(--spacing-small);
   min-height: 100vh;
+  position: relative; /* Para posicionar o botão */
+}
+
+/* --- THEME TOGGLE BUTTON --- */
+#theme-toggle {
+  position: absolute;
+  top: var(--spacing-small);
+  right: var(--spacing-small);
+  z-index: 1000;
+  background-color: var(--color-btn-reset-bg);
+  color: var(--color-text-heading);
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--border-radius-small);
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+#theme-toggle:hover {
+  background-color: var(--color-btn-reset-hover);
 }
 
 /* --- LAYOUT: Default is single-column for mobile --- */
 .container {
-  max-width: 1600px;
-  margin: 0 auto;
+  /* Removido o max-width para ocupar mais espaço */
+  /* max-width: 1600px; */
+  width: 100%; /* Garante que ocupe 100% do espaço disponível */
+  margin: 0 auto; /* Mantém a centralização se houver overflow ou padding */
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--spacing-medium);
   height: auto;
+  /* Adiciona padding horizontal responsivo para evitar que o conteúdo toque nas bordas em *todos* os ecrãs */
+  padding-left: var(--spacing-small);
+  padding-right: var(--spacing-small);
 }
 
-.skills-section, 
-.center-column, 
+.skills-section,
+.center-column,
 .inventory-section {
   background-color: var(--color-background-secondary);
   border: 1px solid var(--color-border-primary);
@@ -83,11 +148,11 @@ body {
   padding: var(--spacing-medium);
 }
 
+/* A coluna central mantém a ordem original em mobile */
 .center-column {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-large);
-  order: -1;
 }
 
 /* --- HEADERS --- */
@@ -127,7 +192,14 @@ body {
 .progress-block.active-green { background-color: var(--color-accent-green); }
 
 /* --- CENTER COLUMN --- */
-.character-section, .config-panel, .simulation-panel { background-color: var(--color-background-secondary); border: 1px solid var(--color-border-primary); border-radius: var(--border-radius-medium); padding: 16px; flex-shrink: 0; }
+.character-section, .config-panel, .simulation-panel {
+  background-color: var(--color-background-secondary);
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--border-radius-medium);
+  padding: 16px;
+  flex-shrink: 0;
+}
+
 .character-header { display: flex; flex-direction: column; align-items: flex-start; gap: 15px; margin-bottom: 16px; }
 .player-info { display: flex; align-items: center; gap: 12px; }
 .avatar-container { position: relative; }
@@ -160,15 +232,66 @@ body {
 .bar-container { flex-grow: 1; height: 20px; background-color: var(--color-background-primary); border-radius: var(--border-radius-small); border: 1px solid var(--color-border-primary); position: relative; overflow: hidden; }
 .bar-fill { height: 100%; border-radius: 3px; transition: width 0.3s ease-in-out; }
 #health-bar-fill { background-color: var(--color-btn-minus-bg); }
-#hunger-bar-fill { background-color: #ea580c; } /* Manteniendo este naranja especÃ­fico si es distinto al de acento */
+#hunger-bar-fill { background-color: #ea580c; }
 .bar-text { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: var(--color-text-heading); text-shadow: 1px 1px 2px rgba(0,0,0,0.7); }
-.equipment-section { margin-top: 16px; }
-.equipment-labels { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-bottom: 6px; font-size: 10px; color: var(--color-text-secondary); text-align: center; }
-.equipment-slots { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
-.equipment-slot { background-color: var(--color-border-secondary); border: 1px solid var(--color-border-primary); border-radius: 5px; padding-top: 100%; position: relative; font-size: 18px; color: var(--color-btn-disabled-bg); cursor: pointer; transition: all 0.2s ease; }
-.equipment-slot:hover { border-color: var(--color-accent-blue); }
-.equipment-slot > * { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60%; height: 60%; object-fit: contain; }
-.equipment-slot img { width: 100%; height: 100%; }
+.light-theme .bar-text { text-shadow: 1px 1px 2px rgba(255,255,255,0.7); }
+
+.equipment-section {
+  margin-top: 10px; /* Reduzido de 16px */
+  padding: 8px; /* Adiciona um pouco de padding interno e reduz o espaço total */
+}
+
+.equipment-labels {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px; /* Reduzido de 6px */
+  margin-bottom: 4px; /* Reduzido de 6px */
+  font-size: 9px; /* Reduzido de 10px */
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+.equipment-slots {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px; /* Reduzido de 6px */
+}
+
+.equipment-slot {
+  background-color: var(--color-border-secondary);
+  border: 1px solid var(--color-border-primary);
+  border-radius: 4px; /* Reduzido de 5px */
+  /* padding-top: 100%; mantém o aspecto 1:1, mas vamos reduzir o tamanho base */
+  padding-top: 70%; /* Torna os slots significativamente menores */
+  position: relative;
+  font-size: 20px; /* Reduzido de 18px para o '+' */
+  color: var(--color-btn-disabled-bg);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  /* Adiciona uma altura mínima para garantir visibilidade em telas muito pequenas */
+  min-height: 30px;
+}
+
+.equipment-slot:hover {
+  border-color: var(--color-accent-blue);
+}
+
+.equipment-slot > * {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* width: 60%; height: 60%; mantém a proporção relativa dentro do slot menor */
+  width: 60%;
+  height: 60%;
+  object-fit: contain;
+}
+
+.equipment-slot img {
+  width: 100%;
+  height: 100%;
+}
+
 .config-and-simulation-section { display: flex; flex-direction: column; gap: var(--spacing-large); }
 .config-panel h4, .simulation-panel h4 { margin: 0; font-size: 15px; font-weight: 600; color: var(--color-text-heading); border-bottom: 1px solid var(--color-border-primary); padding-bottom: 8px; }
 .item-details { display: flex; align-items: center; gap: var(--spacing-small); margin-bottom: 10px; }
@@ -200,13 +323,17 @@ input[type="range"]::-moz-range-thumb { width: 14px; height: 14px; background: v
 .log-critical { color: var(--color-accent-red); font-weight: bold; font-size: 1.1em; text-shadow: 0 0 5px var(--color-accent-red); }
 .log-normal { color: var(--color-accent-orange); }
 .log-health-lost { color: var(--color-text-secondary); }
-.log-details { list-style-type: 'Â» '; padding-left: 20px; margin: 0; font-size: 12px; color: var(--color-text-secondary); line-height: 1.6; }
+.log-details { list-style-type: '» '; padding-left: 20px; margin: 0; font-size: 12px; color: var(--color-text-secondary); line-height: 1.6; }
 .log-details li strong { color: var(--color-text-heading); font-weight: 600; }
 #simulate-full-btn { background-color: var(--color-accent-primary); border-color: var(--color-accent-primary-hover); width: 100%; margin-top: 8px; }
 #simulate-full-btn:hover { background-color: var(--color-accent-primary-hover); }
 
 /* --- INVENTORY --- */
-.inventory-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(65px, 1fr)); gap: 12px; }
+.inventory-grid { 
+  display: grid; 
+  grid-template-columns: repeat(auto-fill, minmax(56px, 1fr)); 
+  gap: 12px; 
+}
 .inventory-item { position: relative; width: 100%; padding-bottom: 100%; height: 0; border-radius: 5px; background-color: var(--color-border-secondary); border: 2px solid transparent; cursor: pointer; transition: all 0.2s ease; overflow: hidden; }
 .inventory-item:hover { transform: scale(1.05); }
 .inventory-item img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
@@ -223,6 +350,7 @@ input[type="range"]::-moz-range-thumb { width: 14px; height: 14px; background: v
 
 /* --- GLOBAL & TOOLTIP --- */
 .stat-tooltip { position: fixed; background-color: var(--color-background-secondary); border: 1px solid var(--color-border-primary); border-radius: var(--border-radius-medium); padding: 10px 15px; z-index: 1000; pointer-events: none; opacity: 0; transition: opacity 0.2s ease-in-out; color: var(--color-text-primary); font-size: 13px; width: auto; min-width: 200px; max-width: 280px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); }
+.light-theme .stat-tooltip { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
 .stat-tooltip h4 { margin: 0 0 8px 0; font-size: 15px; color: var(--color-text-heading); border-bottom: 1px solid var(--color-border-secondary); padding-bottom: 5px; }
 .stat-tooltip .description { font-size: 11px; color: var(--color-text-secondary); margin-bottom: 10px; line-height: 1.4; }
 .stat-tooltip .description em { font-style: normal; color: var(--color-accent-orange); }
@@ -231,11 +359,11 @@ input[type="range"]::-moz-range-thumb { width: 14px; height: 14px; background: v
 .stat-tooltip .detail-value { font-weight: 500; color: var(--color-text-heading); }
 .stat-tooltip .total-line { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--color-border-secondary); font-weight: 600; font-size: 14px; display: flex; justify-content: space-between; color: var(--color-accent-orange); }
 .stat-tooltip .total-line .detail-value { color: inherit; }
-
 .hidden { display: none !important; }
 
 /* --- MODAL --- */
 .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); display: flex; align-items: center; justify-content: center; z-index: 2000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+.light-theme .modal-overlay { background-color: rgba(0, 0, 0, 0.5); }
 .modal-overlay:not(.hidden) { opacity: 1; pointer-events: auto; }
 .modal-content { background-color: var(--color-background-secondary); border: 1px solid var(--color-border-primary); border-radius: var(--border-radius-medium); padding: var(--spacing-large); width: 90%; max-width: 500px; transform: scale(0.95); transition: transform 0.3s ease; }
 .modal-overlay:not(.hidden) .modal-content { transform: scale(1); }
@@ -273,25 +401,76 @@ input[type="range"]::-moz-range-thumb { width: 14px; height: 14px; background: v
 .export-footer h4 { margin: 0 0 5px 0; font-size: 16px; color: var(--color-text-secondary); font-weight: 500; }
 .export-footer p { margin: 0; font-size: 18px; font-weight: 600; color: var(--color-accent-green); }
 .export-stat-item { margin-bottom: 12px; font-size: 14px; }
-.export-stat-header { display: flex; justify-content: space-between; font-weight: bold; border-bottom: 1px solid #2a2a2a; padding-bottom: 4px; margin-bottom: 6px; }
+.export-stat-header { display: flex; justify-content: space-between; font-weight: bold; border-bottom: 1px solid var(--color-border-secondary); padding-bottom: 4px; margin-bottom: 6px; }
 .export-stat-header .name { color: var(--color-text-strong); }
 .export-stat-header .total-value { color: var(--color-accent-blue); }
 .export-stat-breakdown { list-style: none; padding-left: 15px; margin: 0; font-size: 12px; color: var(--color-text-secondary); }
 .export-stat-breakdown li { display: flex; justify-content: space-between; }
 .export-stat-breakdown .source { color: var(--color-btn-disabled-bg); }
-.export-stat-breakdown .value { font-weight: 500; color: #a3a3a3; }
+.light-theme .export-stat-breakdown .value { color: #636c76; }
 
-/* --- MEDIA QUERIES for larger screens --- */
+/* --- MEDIA QUERIES for larger screens (e.g., tablets and desktops) --- */
 @media (min-width: 768px) {
-  body { padding: var(--spacing-large); }
-  .container { grid-template-columns: 320px 1fr; grid-template-areas: "skills center" "inventory inventory"; }
-  .skills-section { grid-area: skills; }
-  .center-column { grid-area: center; }
-  .inventory-section { grid-area: inventory; }
-  .character-header { flex-direction: row; align-items: center; justify-content: space-between; }
+  body {
+    padding: var(--spacing-large);
+  }
+
+  /* Layout principal: 1/3 (Skills) à direita, 2/3 (Centro + Inventário) à esquerda */
+  .container {
+    /* Define 2 colunas: 2fr (dois terços) para a esquerda, 1fr (um terço) para a direita */
+    grid-template-columns: 2fr 1fr;
+    /* Define as áreas do grid:
+               "center skills"
+               "inventory skills"
+             Isso coloca Centro e Inventário na coluna da esquerda (2fr),
+             e Skills na coluna da direita (1fr).
+             Centro fica em cima de Inventário dentro da coluna esquerda.
+    */
+  /* Exemplo: Centro ocupa 70%, Inventário ocupa 30% da altura disponível */
+  grid-template-rows: 7fr 3fr; /* Ou qualquer outra proporção desejada */
+  grid-template-areas:
+    "center skills"
+    "inventory skills";
+  gap: var(--spacing-large);
+  height: calc(100vh - 2 * var(--spacing-large));
+}
+  /* Atribui as áreas do grid às respectivas secções */
+  .skills-section {
+    grid-area: skills; /* Coloca esta secção na área 'skills' (coluna da direita) */
+  }
+
+  .center-column {
+    grid-area: center; /* Coloca esta secção na área 'center' (canto superior esquerdo) */
+    /* Mantém o display flex e flex-direction column para os elementos internos */
+  }
+
+  .inventory-section {
+    grid-area: inventory; /* Coloca esta secção na área 'inventory' (em baixo de 'center') */
+  }
+
+  /* Ajusta o cabeçalho do personagem para linha em telas maiores */
+  .character-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
 }
 
+/* --- MEDIA QUERIES for extra large screens --- */
+/* O layout definido em 768px é suficiente. Podemos garantir scrolls se necessário. */
 @media (min-width: 1200px) {
-  .container { grid-template-columns: 400px 1fr 380px; grid-template-areas: "skills center inventory"; height: calc(100vh - 40px); }
-  .skills-section, .center-column, .inventory-section { overflow-y: auto; }
+  .container {
+    /* As áreas e proporções já estão definidas na media query anterior (768px).
+       Apenas aumentamos ligeiramente o espaço para telas muito largas. */
+    gap: calc(var(--spacing-large) + 5px);
+    /* Ou podemos fixar as larguras mínimas das colunas se desejado:
+    grid-template-columns: minmax(0, 2fr) minmax(350px, 1fr); */
+  }
+
+  /* Garante que as seções principais tenham scroll se o conteúdo ultrapassar a altura */
+  .skills-section,
+  .center-column,
+  .inventory-section {
+    overflow-y: auto;
+  }
 }

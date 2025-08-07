@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Principal</title>
+    <style>
+        /* CSS Básico Inline para simplificar */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background-color: #0d1117;
+            color: #e6edf3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .menu-container {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 40px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+        h1 {
+            color: #f0f6fc;
+            margin-bottom: 30px;
+        }
+        .menu-button {
+            background-color: #8b5cf6; /* Cor de destaque primária */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 15px 25px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 20px;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+        .menu-button:hover {
+            background-color: #7c3aed; /* Hover da cor primária */
+        }
+        .menu-button:active {
+             transform: scale(0.98); /* Pequeno efeito de clique */
+        }
+        .action-btn {
+             background-color: #6e7681; /* Cor do botão reset */
+             color: #f0f6fc;
+             border: 1px solid #30363d;
+             border-radius: 5px;
+             padding: 12px 20px;
+             font-size: 16px;
+             font-weight: 500;
+             cursor: pointer;
+             transition: background-color 0.2s ease;
+             text-decoration: none; /* Para o link */
+             display: inline-block; /* Para o link */
+             margin-top: 10px;
+        }
+        .action-btn:hover {
+             background-color: #8b949e; /* Hover do botão reset */
+        }
+        /* Estilos para o tema claro */
+        .light-theme .menu-container {
+             background-color: #f6f8fa;
+             border-color: #d0d7de;
+        }
+        .light-theme body {
+             background-color: #ffffff;
+             color: #1f2328;
+        }
+        .light-theme h1 {
+             color: #111827;
+        }
+        .light-theme .action-btn {
+             background-color: #afb8c1;
+             border-color: #d0d7de;
+             color: #111827;
+        }
+        .light-theme .action-btn:hover {
+             background-color: #8c959f;
+        }
+        /* Botão para alternar tema */
+        #theme-toggle-menu {
+             position: absolute;
+             top: 20px;
+             right: 20px;
+             background-color: #6e7681;
+             color: #f0f6fc;
+             border: 1px solid #30363d;
+             border-radius: 5px;
+             padding: 8px 12px;
+             cursor: pointer;
+             font-size: 14px;
+        }
+        .light-theme #theme-toggle-menu {
+             background-color: #afb8c1;
+             border-color: #d0d7de;
+             color: #111827;
+        }
+    </style>
+</head>
+<body>
+    <!-- Botão de tema -->
+    <button id="theme-toggle-menu">🌕 Modo Claro</button>
+
+    <div class="menu-container">
+        <h1>Lobby de War Era Portugal</h1>
+        <!-- Botão para iniciar o jogo (liga à tua aplicação) -->
+        <a href="combate/" class="menu-button">🪖 Combate</a>
+        <a href="mercado/" class="menu-button">📊 Mercado</a>
+        <!-- Outros botões do menu podem ser adicionados aqui -->
+        <a href="index.html" class="action-btn">Logout</a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+             // --- Lógica de Alternância de Tema ---
+             const toggleButtonMenu = document.getElementById('theme-toggle-menu');
+             const htmlElement = document.documentElement;
+
+             // Verifica e aplica o tema guardado
+             const savedTheme = localStorage.getItem('theme');
+             if (savedTheme === 'light') {
+                 htmlElement.classList.add('light-theme');
+                 toggleButtonMenu.textContent = '🌑  Modo Escuro';
+             } else if (savedTheme === 'dark') {
+                 htmlElement.classList.remove('light-theme');
+                 toggleButtonMenu.textContent = '🌕 Modo Claro';
+             }
+             // Se não houver tema guardado, mantém o padrão do sistema/body
+
+             toggleButtonMenu.addEventListener('click', () => {
+                 htmlElement.classList.toggle('light-theme');
+                 const isLight = htmlElement.classList.contains('light-theme');
+                 toggleButtonMenu.textContent = isLight ? '🌑  Modo Escuro' : '🌕 Modo Claro';
+                 localStorage.setItem('theme', isLight ? 'light' : 'dark');
+             });
+        });
+    </script>
+</body>
+</html>

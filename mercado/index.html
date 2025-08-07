@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dados do Mercado - Meu Jogo</title>
+    <link rel="stylesheet" href="../public/styles/style.css"> <!-- Se tiveres estilos globais -->
+    <link rel="stylesheet" href="style.css"> <!-- Estilos específicos -->
+    <!-- Chart.js para o gráfico -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Botão para alternar o tema, no canto superior direito -->
+    <button id="theme-toggle-market" class="action-btn" style="position: absolute; top: var(--spacing-small, 10px); right: var(--spacing-small, 10px); z-index: 1000;"></button>
+
+    <div class="market-container">
+        <!-- Cabeçalho com botão de voltar -->
+        <div class="market-header">
+            <button id="back-to-menu-btn" class="action-btn">🏠 Menu</button>
+            <h1>Dados do Mercado</h1>
+            <button id="refresh-btn" class="action-btn">🔄 Atualizar</button>
+        </div>
+
+        <!-- Informação do Bónus (simulando E23) -->
+        <div class="bonus-section">
+            <label for="bonus-input">Bónus de Lucro (%):</label>
+            <input type="number" id="bonus-input" value="0" min="0"> <!-- Removido max -->
+            <button id="update-bonus-btn" class="action-btn">Atualizar</button>
+            <span id="bonus-status"></span>
+        </div>
+
+        <!-- Rankings -->
+        <div class="rankings-section">
+            <h2>Rankings</h2>
+            <p><strong>Melhor produto:</strong> <span id="best-item">Calculando...</span></p>
+            <p><strong>Pior produto:</strong> <span id="worst-item">Calculando...</span></p>
+        </div>
+
+        <!-- Tabela de Dados -->
+        <div class="table-section">
+            <h2>Itens e Preços</h2>
+            <div id="loading-message">A carregar dados...</div>
+            <table id="market-table" class="hidden">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Preço de Mercado</th>
+                        <th>Lucro Bruto</th>
+                        <th>Trabalho</th>
+                        <th>Nº Ingredientes</th>
+                        <th>Custo dos Ingredientes</th>
+                        <th>Lucro por Trabalho</th>
+                        <th>Lucro por Trabalho (c/ Bónus)</th>
+                    </tr>
+                </thead>
+                <tbody id="market-table-body">
+                    <!-- Linhas de dados serão inseridas aqui por JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Gráfico -->
+        <div class="chart-section">
+            <h2>Ranking de Lucro por Trabalho (c/ Bónus)</h2>
+            <div id="chart-container">
+                 <canvas id="profit-chart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="market.js"></script>
+
+    <!-- Script UNIFICADO para alternar o tema e voltar ao menu -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Lógica do Botão de Tema ---
+            const toggleButton = document.getElementById('theme-toggle');
+            const htmlElement = document.documentElement;
+
+            // Verifica preferência guardada ou do sistema
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const initialTheme = savedTheme || (prefersDarkScheme ? 'dark' : 'light');
+
+            // Aplica o tema inicial
+            if (initialTheme === 'light') {
+                htmlElement.classList.add('light-theme');
+                // Certifica-te de que o botão existe antes de tentar modificar
+                if (toggleButton) {
+                    toggleButton.textContent = '🌑 Modo Escuro';
+                }
+            } else {
+                htmlElement.classList.remove('light-theme');
+                if (toggleButton) {
+                    toggleButton.textContent = '🌕 Modo Claro';
+                }
+            }
+
+            // Listener para o botão de tema (apenas se o botão existir)
+            if (toggleButton) {
+                toggleButton.addEventListener('click', () => {
+                    htmlElement.classList.toggle('light-theme');
+                    const isLight = htmlElement.classList.contains('light-theme');
+                    toggleButton.textContent = isLight ? '🌑 Modo Escuro' : '🌕 Modo Claro';
+                    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+                });
+            }
+
+            // --- Lógica do Botão "Menu" ---
+            const backButton = document.getElementById('back-to-menu-btn');
+            // Listener para o botão de voltar ao menu (apenas se o botão existir)
+            if (backButton) {
+                backButton.addEventListener('click', () => {
+                    window.location.href = '../main-menu.html'; // Navega para o menu principal
+                });
+            }
+        });
+    </script>
+</body>
+</html>
