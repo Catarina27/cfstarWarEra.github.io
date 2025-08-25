@@ -9,7 +9,7 @@ import {
   MIN_PLAYER_LEVEL, 
   MAX_PLAYER_LEVEL, 
   MAX_SKILL_LEVEL, 
-  MIN_SKILL_LEVEL 
+  MIN_SKILL_LEVEL
 } from './state.js';
 import { 
   getSkillData, 
@@ -47,6 +47,149 @@ async function fetchJsonData(path) {
 }
 
 // --- Event Handlers ---
+
+/**
+ * Atualiza o estado do jogador com dados externos
+ * @param {Object} userData - Dados do usuário vindos da API
+ */
+function updatePlayerStateFromAPI(userData) {
+  // Ajuste para a estrutura correta da API
+  const user = userData; // Os dados reais estão diretamente em userData, não em userData.user
+  
+  if (!user) {
+    console.error('Dados do usuário inválidos:', userData);
+    return false;
+  }
+  
+  console.log('Dados do usuário processados:', user);
+  
+  try {
+    // Extrai os dados de nivelamento (leveling)
+    const leveling = user.leveling || {};
+    const skills = user.skills || {};
+    
+    // Atualiza o nível do jogador
+    const userLevel = leveling.level || MIN_PLAYER_LEVEL;
+    const newLevel = Math.max(MIN_PLAYER_LEVEL, Math.min(MAX_PLAYER_LEVEL, userLevel));
+    playerState.playerLevel = newLevel;
+    
+    // Reseta todas as habilidades
+    for (const skill in playerState.assignedSkillLevels) {
+      playerState.assignedSkillLevels[skill] = 0;
+    }
+    
+    // Mapeamento de habilidades da API para o nosso sistema
+    const skillMapping = {
+      'attack': 'attack',
+      'precision': 'precision',
+      'criticalChance': 'criticalChance',
+      'criticalDamages': 'criticalDamages',
+      'armor': 'armor',
+      'dodge': 'dodge',
+      'health': 'health',
+      'hunger': 'hunger',
+      'lootChance': 'lootChance'
+    };
+    
+    // Atualiza as habilidades se existirem nos dados
+    Object.entries(skills).forEach(([apiSkill, skillData]) => {
+      const gameSkill = skillMapping[apiSkill];
+      if (gameSkill && playerState.assignedSkillLevels.hasOwnProperty(gameSkill)) {
+        const skillLevel = Math.max(MIN_SKILL_LEVEL, Math.min(MAX_SKILL_LEVEL, skillData.level || 0));
+        playerState.assignedSkillLevels[gameSkill] = skillLevel;
+      }
+    });
+    
+    // Recalcula pontos de habilidade baseado nas habilidades atuais
+    let pointsSpent = 0;
+    for (const [skillCode, level] of Object.entries(playerState.assignedSkillLevels)) {
+      // Calcula o custo acumulado para o nível atual da habilidade
+      const cost = calculateCumulativeSkillCost(skillCode, level);
+      pointsSpent += cost;
+    }
+    
+    // Usa os pontos da API se disponíveis, senão calcula
+    const totalPoints = leveling.totalSkillPoints || (newLevel * SKILL_POINTS_PER_LEVEL);
+    const spentPoints = leveling.spentSkillPoints || pointsSpent;
+    const availablePoints = leveling.availableSkillPoints || (totalPoints - spentPoints);
+    
+    playerState.skillPointsSpent = spentPoints;
+    playerState.skillPointsAvailable = Math.max(0, availablePoints);
+    
+    // Atualiza vida e fome baseado nos valores das habilidades
+    // Primeiro, encontra os dados das habilidades health e hunger
+    const healthSkill = skills.health || { level: 0, value: 50 };
+    const hungerSkill = skills.hunger || { level: 0, value: 10 };
+    
+    playerState.currentHealth = healthSkill.value || 50;
+    playerState.currentHunger = hungerSkill.value || 10;
+    
+    console.log('Estado do jogador atualizado com sucesso:', {
+      level: playerState.playerLevel,
+      skills: playerState.assignedSkillLevels,
+      pointsAvailable: playerState.skillPointsAvailable,
+      pointsSpent: playerState.skillPointsSpent,
+      health: playerState.currentHealth,
+      hunger: playerState.currentHunger
+    });
+    
+    return true;
+  } catch (error) {
+    console.error('Erro ao atualizar estado do jogador:', error);
+    return false;
+  }
+}
+/**
+ * Carrega os dados do jogador a partir da API
+ */
+async function loadPlayerFromAPI() {
+  const playerIdInput = document.getElementById('player-id-input');
+  const loadButton = document.getElementById('load-player-btn');
+  
+  const playerId = playerIdInput.value.trim();
+  
+  if (!playerId) {
+    alert('Por favor, insira um ID de jogador válido.');
+    return;
+  }
+  
+  // Desativa o botão durante o carregamento
+  loadButton.disabled = true;
+  loadButton.textContent = 'Carregando...';
+  
+  try {
+    console.log('Carregando dados para ID:', playerId);
+    const response = await fetch(`https://api2.warera.io/trpc/user.getUserLite?input=${encodeURIComponent(JSON.stringify({userId: playerId}))}`);
+    
+    console.log('Status da resposta:', response.status);
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    console.log('Dados recebidos da API:', data);
+    
+    if (data.result?.data) {
+      const success = updatePlayerStateFromAPI(data.result.data);
+      if (success) {
+        renderAllUI();
+        alert('Dados do jogador carregados com sucesso!');
+      } else {
+        alert('Erro ao processar os dados do jogador. Verifique o console para mais detalhes.');
+      }
+    } else {
+      alert('Jogador não encontrado ou dados incompletos.');
+    }
+  } catch (error) {
+    console.error('Erro ao carregar dados do jogador:', error);
+    alert('Erro ao carregar dados do jogador. Verifique o ID e tente novamente.');
+  } finally {
+    // Reativa o botão
+    loadButton.disabled = false;
+    loadButton.textContent = 'Carregar Dados';
+  }
+}
 
 function handleSkillButtonClick(button) {
   const skillCode = button.dataset.skill;
@@ -616,6 +759,21 @@ async function initialize() {
       handleSkillButtonClick(button); // Lógica da habilidade
     }
   });
+  // Adiciona listener para o botão de carregar dados do jogador
+    const loadPlayerBtn = document.getElementById('load-player-btn');
+    if (loadPlayerBtn) {
+      loadPlayerBtn.addEventListener('click', loadPlayerFromAPI);
+    }
+
+    // Também permite carregar com Enter no campo de ID
+    const playerIdInput = document.getElementById('player-id-input');
+    if (playerIdInput) {
+      playerIdInput.addEventListener('keypress', (event) => {
+        if (event.key === 'Enter') {
+          loadPlayerFromAPI();
+        }
+      });
+    }
 
   // Adiciona listener para o clique direito (des equipar) nos slots de equipamento
   ui.equipmentSlotsContainer.addEventListener('contextmenu', handleUnequipItem);

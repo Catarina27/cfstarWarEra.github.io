@@ -10,9 +10,17 @@
     <body>
     <button id="theme-toggle" class="action-btn">🌕 Modo Claro</button>
 <button id="back-to-menu-btn" class="action-btn" style="position: absolute; top: var(--spacing-small); left: var(--spacing-small); z-index: 1000;">🏠 Menu</button>
-        <div class="container">
+
+<div class="container">
+
             <!-- COLUNA 1: HABILIDADES -->
             <div class="skills-section">
+                            <!-- Entrada id do jodagor -->
+            <div class="player-id-section">
+                <label for="player-id-input">ID do Jogador:</label>
+                <input type="text" id="player-id-input" placeholder="Digite o ID do jogador">
+                <button id="load-player-btn">Carregar Dados</button>
+            </div>
                 <div class="skills-title">Habilidades de combate</div>
                 <div class="skill" data-skill="attack">
                     <div class="skill-header">
@@ -249,6 +257,7 @@
                     </div>
                 </div>
             </div>
+            
             <!-- COLUNA 2: CENTRO -->
             <div class="center-column">
                 <div class="character-section">
@@ -371,6 +380,7 @@
                     </div>
                 </div>
             </div>
+            
             <!-- COLUNA 3: INVENTÁRIO -->
             <div class="inventory-section">
                 <div class="inventory-title">Inventário</div>

@@ -1,3 +1,49 @@
+.player-id-section {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 15px;
+  background: #1a1f25;
+  border-radius: 8px;
+  border: 1px solid #2d3748;
+}
+
+.player-id-section label {
+  font-weight: bold;
+  color: #e2e8f0;
+}
+
+.player-id-section input {
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: 1px solid #4a5568;
+  background: #2d3748;
+  color: #e2e8f0;
+  flex: 1;
+  max-width: 300px;
+}
+
+.player-id-section button {
+  padding: 8px 16px;
+  background: #4299e1;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.player-id-section button:hover {
+  background: #3182ce;
+}
+
+.player-id-section button:disabled {
+  background: #718096;
+  cursor: not-allowed;
+}
+
 /* --- THEME & GLOBAL VARIABLES --- */
 /* Dark Theme (default) - Palette inspired by GitHub Dark */
 :root {
